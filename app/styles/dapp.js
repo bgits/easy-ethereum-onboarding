@@ -6,6 +6,11 @@ const useStyles = makeStyles(theme => ({
     gridTemplateColumns: 'repeat(12, [col] 1fr)',
     gridRowGap: '1em'
   },
+  button: {
+    gridColumn: '4 / 10',
+    background: '#F06451',
+    height: '3.5rem'
+  },
   fullWidth: {
     gridColumn: '1 / 13'
   },

@@ -50,7 +50,7 @@ function App(props) {
       />
       {noTransactions && <Typography className={classes.helpText}>No account associated with this email. Send them some ETH to help them get started!</Typography>}
       {noTransactions && <SendTransaction />}
-      <Button className={fullWidth} variant="contained" onClick={connectTorusProvider}>
+      <Button className={classes.button} variant="contained" onClick={connectTorusProvider}>
         Connect with Torus
       </Button>
     </div>
