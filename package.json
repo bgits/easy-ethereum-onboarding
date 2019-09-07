@@ -27,6 +27,7 @@
     "@skalenetwork/filestorage.js": "^0.2.3",
     "@toruslabs/torus-embed": "0.0.28",
     "etherscan-api": "^10.0.4",
-    "squarelink": "^1.0.7"
+    "squarelink": "^1.0.7",
+    "typeface-roboto": "0.0.75"
   }
 }

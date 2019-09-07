@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
+import 'typeface-roboto'
 import Torus from "@toruslabs/torus-embed"
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
@@ -35,25 +36,20 @@ function App(props) {
   const { fullWidth } = classes
   return (
     <div className={classes.root}>
-      Testing
-      <input className={fullWidth} onChange={(e) => skaleFileUpload(e)} type="file" id="files" / >
-      <Button className={fullWidth} variant="contained" onClick={connectSquareLink}>
-        Connect with Squarelink
-      </Button>
-      <Button className={fullWidth} variant="contained" onClick={connectTorusProvider}>
-        Connect with Torus
-      </Button>
+      <Typography className={classes.title}>Help onboard a friend to Ethereum</Typography>
       <TextField
         id="outlined-bare"
-        className={classes.fullWidth}
+        className={classes.emailSearch}
         margin="normal"
         variant="outlined"
-        placeholder="Enter email"
+        placeholder="Enter their email to see if they have an active account"
         type="email"
         onChange={inputHandler}
       />
-      {hasTransactions === false && <Typography>No account Associated with Account</Typography>}
-      <Button className={fullWidth} variant="contained" onClick={logthis}>Log this</Button>
+      {hasTransactions === false && <Typography className={classes.helpText}>No account associated with this email. Send them some ETH to help them get started!</Typography>}
+      <Button className={fullWidth} variant="contained" onClick={connectTorusProvider}>
+        Connect with Torus
+      </Button>
     </div>
   )
 }
