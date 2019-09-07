@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
   fullWidth: {
     gridColumn: '1 / 13'
   },
-  emailSearch: {
+  textField: {
     gridColumn: '4 / 10',
     ['800px']: {
       gridColumn: '1 / 13'

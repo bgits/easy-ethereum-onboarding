@@ -13,6 +13,7 @@ import { connectSquareLink } from './utils/squareLink'
 import { skaleFileUpload } from './utils/skale'
 import { connectTorus, connectTorusProvider, simpleTorusInit } from './utils/torus'
 import { getTxCountByEmail } from './utils/lookups'
+import SendTransaction from './components/SendTx'
 
 function App(props) {
   const [hasTransactions, setTransactions] = useState(null)
@@ -34,19 +35,21 @@ function App(props) {
 
   const classes = useStyles()
   const { fullWidth } = classes
+  const noTransactions = hasTransactions === false
   return (
     <div className={classes.root}>
       <Typography className={classes.title}>Help onboard a friend to Ethereum</Typography>
       <TextField
         id="outlined-bare"
-        className={classes.emailSearch}
+        className={classes.textField}
         margin="normal"
         variant="outlined"
         placeholder="Enter their email to see if they have an active account"
         type="email"
         onChange={inputHandler}
       />
-      {hasTransactions === false && <Typography className={classes.helpText}>No account associated with this email. Send them some ETH to help them get started!</Typography>}
+      {noTransactions && <Typography className={classes.helpText}>No account associated with this email. Send them some ETH to help them get started!</Typography>}
+      {noTransactions && <SendTransaction />}
       <Button className={fullWidth} variant="contained" onClick={connectTorusProvider}>
         Connect with Torus
       </Button>
