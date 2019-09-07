@@ -17,6 +17,7 @@ import SendTransaction from './components/SendTx'
 
 function App(props) {
   const [hasTransactions, setTransactions] = useState(null)
+  const [contact, setContact] = useState({ email: '', address: '' })
 
   useEffect(() => {
     simpleTorusInit()
@@ -30,7 +31,7 @@ function App(props) {
 
   const inputHandler = e => {
     const email = e.target.value
-    getTxCountByEmail(email, setTransactions)
+    getTxCountByEmail(email, setTransactions, setContact)
   }
 
   const classes = useStyles()
@@ -49,7 +50,7 @@ function App(props) {
         onChange={inputHandler}
       />
       {noTransactions && <Typography className={classes.helpText}>No account associated with this email. Send them some ETH to help them get started!</Typography>}
-      {noTransactions && <SendTransaction />}
+      {noTransactions && <SendTransaction contact={contact} />}
       <Button className={classes.button} variant="contained" onClick={connectTorusProvider}>
         Connect with Torus
       </Button>
