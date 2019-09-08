@@ -26,10 +26,8 @@ export const simpleTorusInit = async () => {
 export const connectTorusProvider = async () => {
   const torus = new Torus();
   await torus.init();
-  torus.setProvider({
-    networkUrl: 'ropsten'
-  })
   await torus.login(); // await torus.ethereum.enable()
+  torus.setProvider('ropsten')
   window.torus = torus;
   window.torusProvider = new Web3(torus.provider);
 }

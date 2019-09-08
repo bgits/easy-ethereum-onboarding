@@ -17,9 +17,17 @@ import { getTxCountByEmail } from './utils/lookups'
 import SendTransaction from './components/SendTx'
 
 function checkConnected(setIsConnected) {
+  console.log('called')
   web3.eth.net.isListening()
-    .then(() => { setIsConnected(true)})
-    .catch(() => { setIsConnected(false)})
+    .then((res) => {
+      console.log({res})
+      simpleTorusInit()
+      setIsConnected(true)
+    })
+    .catch((err) => {
+      console.log({err})
+      setIsConnected(false)
+    })
 }
 
 function App(props) {
@@ -29,12 +37,8 @@ function App(props) {
   const [contact, setContact] = useState({ email: '', address: '' })
 
   useEffect(() => {
-    simpleTorusInit()
+   checkConnected(setConnected)
   }, [])
-
-  useEffect(() => {
-    checkConnected(setConnected)
-  }, [web3])
 
   const logthis = async () => {
     const { fileStorage, web3Skale } = this
