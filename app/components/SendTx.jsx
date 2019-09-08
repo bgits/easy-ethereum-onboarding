@@ -7,12 +7,13 @@ import useStyles from '../styles/dapp'
 
 const subject = 'I just sent you some crypto currency'
 const body = amount => `I just sent you ${amount} ETH to help you get started with Ethereum. You can access your Ethereum wallet just using your gmail account. Go to http://tor.us to start using it!`
-function SendTransaction({ contact }) {
+function SendTransaction({ contact, setLoading }) {
   const classes = useStyles()
   return (
     <Formik
       initialValues={{ amount: '' }}
-      onSubmit={async (values, { setSubmitting }) => {
+      onSubmit={async (values, { resetForm }) => {
+        setLoading(true)
         const amount = web3.utils.toWei(values.amount)
         const from = await web3.eth.getCoinbase()
         const toSend = web3.eth.sendTransaction({
@@ -21,9 +22,12 @@ function SendTransaction({ contact }) {
           value: amount
         }).then(res => {
           console.log({res})
+          setLoading(false)
           window.location.href = `mailto:${contact.email}?subject=${subject}&body=${body(values.amount)}`;
-        }).catch(console.log)
-        console.log({amount, contact})
+        }).catch(err => {
+          setLoading(false)
+          console.log({err})
+        }).finally(() => { resetForm() })
       }}
     >
     {({

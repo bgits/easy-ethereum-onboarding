@@ -11,8 +11,9 @@ function getTransactionCount(address) {
   return web3.eth.getTransactionCount(address)
 }
 
-export async function getTxCountByEmail(email, setState, setContact) {
+export async function getTxCountByEmail(email, setState, setContact, setLoading) {
   if (validateEmail(email)) {
+    setLoading(true)
     const address = await getPublicAddress(email);
     const balance = await etherscan.account.balance(address)
     setContact({ email, address })
@@ -23,5 +24,6 @@ export async function getTxCountByEmail(email, setState, setContact) {
       hasTransactions = false
     }
     setState(hasTransactions);
+    setLoading(false);
   }
 }

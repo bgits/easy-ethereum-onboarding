@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import EmbarkJS from 'Embark/EmbarkJS';
 import Web3 from 'web3'
 import Button from '@material-ui/core/Button'
+import LinearProgress from '@material-ui/core/LinearProgress'
 import { Typography } from '@material-ui/core'
 import TextField from '@material-ui/core/TextField'
 import useStyles from './styles/dapp'
@@ -15,13 +16,25 @@ import { connectTorus, connectTorusProvider, simpleTorusInit } from './utils/tor
 import { getTxCountByEmail } from './utils/lookups'
 import SendTransaction from './components/SendTx'
 
+function checkConnected(setIsConnected) {
+  web3.eth.net.isListening()
+    .then(() => { setIsConnected(true)})
+    .catch(() => { setIsConnected(false)})
+}
+
 function App(props) {
   const [hasTransactions, setTransactions] = useState(null)
+  const [loading, setLoading ] = useState(false)
+  const [isConnected, setConnected] = useState(false)
   const [contact, setContact] = useState({ email: '', address: '' })
 
   useEffect(() => {
     simpleTorusInit()
   }, [])
+
+  useEffect(() => {
+    checkConnected(setConnected)
+  }, [web3])
 
   const logthis = async () => {
     const { fileStorage, web3Skale } = this
@@ -31,15 +44,17 @@ function App(props) {
 
   const inputHandler = e => {
     const email = e.target.value
-    getTxCountByEmail(email, setTransactions, setContact)
+    getTxCountByEmail(email, setTransactions, setContact, setLoading)
   }
 
   const classes = useStyles()
   const { fullWidth } = classes
   const noTransactions = hasTransactions === false
+  const transactionsExist = hasTransactions === true
   return (
     <div className={classes.root}>
-      <Typography className={classes.title}>Help onboard a friend to Ethereum</Typography>
+      {loading && <LinearProgress className={classes.loading} />}
+      <Typography className={classnames(classes.title, classes.marginTop)}>Help onboard a friend to Ethereum</Typography>
       <TextField
         id="outlined-bare"
         className={classes.textField}
@@ -50,10 +65,11 @@ function App(props) {
         onChange={inputHandler}
       />
       {noTransactions && <Typography className={classes.helpText}>No account associated with this email. Send them some ETH to help them get started!</Typography>}
-      {noTransactions && <SendTransaction contact={contact} />}
-      <Button className={classes.button} variant="contained" onClick={connectTorusProvider}>
+      {transactionsExist && <Typography className={classes.helpText}>Your friend already has some transactions</Typography>}
+      {noTransactions && <SendTransaction contact={contact} setLoading={setLoading} />}
+      {!isConnected && <Button className={classes.button} variant="contained" onClick={connectTorusProvider}>
         Connect with Torus
-      </Button>
+       </Button>}
     </div>
   )
 }
